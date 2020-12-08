@@ -6,7 +6,7 @@ classes:
 header:
   overlay_filter: "0.5"
   overlay_image: /assets/images/Fond.jpg
-excerpt: la chimie, c'est la vie.
+excerpt: la physique, c'est la vie.
 ---
 {% comment %}
 Ajouter des images dans une page :
