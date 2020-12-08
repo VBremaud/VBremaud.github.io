@@ -17,12 +17,12 @@ title: Aurélieng
 email: 
 description: >- # this means to ignore newlines until "baseurl:"
   Bonjour
-github_username: aure00
+github_username: Vbremaud
 logo: /assets/images/logo_saturne.png
 search: true
 
 baseurl: ""
-url: "https://aure00.github.io"
+url: "https://Vbremaud.github.io"
 
 minimal_mistakes_skin: air
 
@@ -64,9 +64,9 @@ plugins:
   - jekyll-include-cache
 
 author:
-  name   : "Aurelien"
+  name   : "Vincent Brémaud"
   avatar : "/assets/images/logo_saturne.png"
-  bio    : "On va faire du Pestacle"
+  bio    : "La physique c'est la vie et merci au poto de Aurélieng"
 
 
 defaults:
