@@ -5,7 +5,7 @@ classes:
   - landing
 header:
   overlay_filter: "0.5"
-  overlay_image: /assets/images/Fond.jpg
+  overlay_image: /assets/images/263px-M51_la_galaxie_du_Tourbillon.jpg
 excerpt: la physique, c'est la vie.
 ---
 {% comment %}
