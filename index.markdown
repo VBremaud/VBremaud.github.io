@@ -4,7 +4,7 @@ layout: splash
 classes:
   - landing
 header:
-  overlay_filter: "0.05"
+  overlay_filter: "1"
   overlay_image: /assets/images/263px-M51_la_galaxie_du_Tourbillon.jpg
 
 ---
