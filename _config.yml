@@ -66,7 +66,7 @@ plugins:
 author:
   name   : "Vincent Brémaud"
   avatar : "/assets/images/circle-cropped.png"
-  bio    : "La physique c'est la vie et merci au poto de Aurélieng"
+  bio    : "physique"
 
 
 defaults:
