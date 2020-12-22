@@ -94,8 +94,6 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
-category_archive:
-  type: liquid
-  path: /LP/
+
 
 theme: jekyll-theme-slate
