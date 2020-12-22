@@ -2,5 +2,5 @@
 permalink: /about/
 title: "A propos"
 ---
-Du pestacle.
+Vincent Brémaud.
 {: .text-justify}
