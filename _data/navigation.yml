@@ -1,7 +1,7 @@
 main:
-  - title: "Blog"
+  - title: "Récents"
     url: /blog/
-  - title: "Categories"
+  - title: "Catégories"
     url: /categories/
   - title: "Tags"
     url: /tags/
