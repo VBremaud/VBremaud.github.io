@@ -1,6 +1,6 @@
 ---
-title: "Posts by Category"
-layout: categories
+title: "Leçons de physique"
+layout: Leçon de physique
 permalink: /categories/
 author_profile: false
 ---
