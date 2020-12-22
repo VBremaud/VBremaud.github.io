@@ -2,5 +2,5 @@
 permalink: /about/
 title: "A propos"
 ---
-Vincent Brémaud.
+Vincent Brémaud, ENS Paris Saclay.
 {: .text-justify}
