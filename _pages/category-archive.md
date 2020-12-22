@@ -1,6 +1,6 @@
 ---
 title: "Leçons de physique"
-layout: Leçon de physique
+layout: categories
 permalink: /categories/
 author_profile: false
 ---
