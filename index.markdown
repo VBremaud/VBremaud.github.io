@@ -4,7 +4,7 @@ layout: splash
 classes:
   - landing
 header:
-  overlay_image: /assets/images/263px-M51_la_galaxie_du_Tourbillon.jpg
+  overlay_image: /assets/images/Messier51_sRGB.jpg
 
 ---
 {% comment %}
