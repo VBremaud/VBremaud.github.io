@@ -1,6 +1,8 @@
 main:
   - title: "Récents"
     url: /blog/
+  - title: "LP"
+    url: /LP/
   - title: "Catégories"
     url: /categories/
   - title: "Tags"
