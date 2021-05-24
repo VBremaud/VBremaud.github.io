@@ -2,7 +2,7 @@
 permalink: /about/
 title: "A propos"
 ---
-Louis Heitz, normalien à l'ENS Paris Saclay, M2 FESUP 2020/2021
+Louis Heitz, normalien à l'ENS Paris Saclay, M2 FESUP 2020/2021.
 <br />
 
 Vincent Brémaud, normalien à l'ENS Paris Saclay, M2 FESUP 2020/2021.
