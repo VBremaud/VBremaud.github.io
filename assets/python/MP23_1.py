@@ -1,6 +1,13 @@
+"""
+@Louis Heitz et Vincent Brémaud
+
+"""
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
+import os
 
+plt.close('all')
 
 # En preparation utiliser la macro IGOR
 # Acquerir le signal de l'oscillo sur une bonne base de temps sans moyenner. Simplement faire le spectre et venir regarder la bande
