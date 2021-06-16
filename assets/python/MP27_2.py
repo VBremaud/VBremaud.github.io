@@ -111,7 +111,7 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-ystr='Vitesse limite dasservissement [Tr/min] '
+ystr="Vitesse limite d'asservissement [Tr/min] "
 xstr='Ehacheur [V]'
 titlestr="Etude de la plage d'asservissement"
 ftsize=18
@@ -140,7 +140,7 @@ plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o', label='Preparation
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,fmt='o',label='Point ajouté')
 plt.plot(xth,func(xth,*popt),label='Ajustement ')
-plt.plot(xdata,Satth, color='k', marker='',markersize=13,linestyle='--', mfc='grey',label='Origine Saturation',zorder=1)
+plt.plot(xdata,Satth, color='k', marker='',markersize=13,linestyle='--', mfc='grey',label='Saturation attendue',zorder=1)
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
 plt.xticks(fontsize=ftsize)

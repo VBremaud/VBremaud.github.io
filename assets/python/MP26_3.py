@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-
+ftsize=18
 
 
 # Rentrer la valeur du nombre de cannulure-1 des deux longueurs d'onde:
@@ -31,8 +31,8 @@ n2=1.5230 #@ 546.1 nm
 n1=1.5255 #@ 589.1 nm
 
 for i in range(N):
-    L1[i]=L1mes+sigmaL1*np.random.randn()/0.68
-    L2[i]=(L2mes+sigmaL2*np.random.randn()/0.68)
+    L1[i]=L1mes+sigmaL1*np.random.randn()
+    L2[i]=(L2mes+sigmaL2*np.random.randn())
 
 result=-(Can-1)/(2*(n2-1)/L2-2*(n1-1)/L1)*1e6
 resultt=-(Can-1)/(2.*(n2-1)/L2mes-2.*(n1-1)/L1mes)*1e6
@@ -47,17 +47,19 @@ resultt=-(Can-1)/(2.*(n2-1)/L2mes-2.*(n1-1)/L1mes)*1e6
 plt.figure()
 plt.hist(result, 50, color='salmon',edgecolor='darkred', alpha=0.75)
 plt.axvline(x=np.mean(result),linestyle='--', color='b')
-plt.xlabel('Epaisseurs (micrometre)')
-plt.ylabel('Probabilite')
-plt.title('Histogramme des epaisseur simulees')
+plt.xlabel('Epaisseurs [micrometre]',fontsize=ftsize)
+plt.ylabel('Probabilite',fontsize=ftsize)
+plt.title('Histogramme des épaisseurs simulees',fontsize=ftsize)
 #plt.text(60, .025, r'$\mu=100,\ \sigma=15$')
 #plt.xlim(40, 160)
 #plt.ylim(0, 0.03)
+plt.xticks(fontsize=ftsize)
+plt.yticks(fontsize=ftsize)
 plt.grid(True)
-plt.savefig(r'Histogram.pdf')
+#plt.savefig(r'Histogram.pdf')
 plt.show()
 
-print('Epaisseur mesuree en micrometre :',np.mean(result))
-print('Incertitude estimee en micrometre :',np.std(result))
+print('Epaisseur mesurée en micrometre :',np.mean(result))
+print('Incertitude estimée en micrometre :',np.std(result))
 
 

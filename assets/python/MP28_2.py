@@ -10,7 +10,7 @@ from scipy.optimize import curve_fit
 
 ftsize=18
 
-bif=1 #Booleen : pour avoir diagramme de bifurcation, mettre à 1. Pour la droite mettre à 0
+bif=0 #Booleen : pour avoir diagramme de bifurcation, mettre à 1. Pour la droite mettre à 0
 
 
 
@@ -121,7 +121,7 @@ if len(xlive) == 0 :
 
 if bif==0:
     ystr='$cos \Theta_{eq}$ '
-    xstr='$\Omega^2$ [rad^2/s^2]'
+    xstr='1/$\Omega^2$ [s^2/rad^2]'
     titlestr="Ajustement linéaire"
 
 if bif==1:

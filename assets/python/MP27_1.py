@@ -14,13 +14,6 @@ def linear(x,a,b):
 
 plt.close('all')
 
-'''
-
-CARACTERISATION MCC BOUCLE OUVERTE
-AUTHOR: TOM PEYROT
-
-
-'''
 
 
 ### Point en live
@@ -102,8 +95,8 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-ystr='Gain en boucle ouverte '
-xstr='Tension de commande moteur'
+ystr='Gain en boucle ouverte []'
+xstr='Tension de commande moteur [V]'
 titlestr='Caracterisation gain en boucle ouverte'
 ftsize=18
 
@@ -129,9 +122,9 @@ plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,marker='o', color='b',mfc='
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,marker='o', markersize=8, color='k',mfc='darkred',ecolor='k',linestyle='',capsize=8,label='Point ajouté')
 plt.plot(xth,np.zeros(len(xth))+np.mean(ydata), color='r', linestyle='--',label='Moyenne ')
-plt.fill_between(xth,np.mean(ydata)-np.std(ydata),np.mean(ydata)+np.std(ydata), color='yellow', alpha=0.5, label='Incertitude Stat')
-plt.axhline(y=np.mean(ydata)-np.std(ydata),color='k')
-plt.axhline(y=np.mean(ydata)+np.std(ydata),color='k')
+plt.fill_between(xth,np.mean(ydata)-np.std(ydata)/np.sqrt(len(ydata)),np.mean(ydata)+np.std(ydata)/np.sqrt(len(ydata)), color='yellow', alpha=0.5, label='Incertitude Stat')
+plt.axhline(y=np.mean(ydata)-np.std(ydata)/np.sqrt(len(ydata)),color='k')
+plt.axhline(y=np.mean(ydata)+np.std(ydata)/np.sqrt(len(ydata)),color='k')
 plt.title(titlestr,fontsize=ftsize)
 plt.xlim([np.min(xdata)-0.1,np.max(xdata)+0.1])
 plt.grid(True)

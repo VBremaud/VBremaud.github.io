@@ -168,8 +168,8 @@ if Eta==1:
     plt.xticks(fontsize=ftsize)
     plt.yticks(fontsize=ftsize)
     plt.legend(fontsize=ftsize)
-    plt.xlabel('Tension (V)',fontsize=ftsize)
-    plt.ylabel('Angle (degré)',fontsize=ftsize)
+    plt.xlabel('Tension [V]',fontsize=ftsize)
+    plt.ylabel('Angle [degré]',fontsize=ftsize)
     plt.show()
 
 ''' Formule de Borda '''

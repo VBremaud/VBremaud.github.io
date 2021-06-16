@@ -10,6 +10,7 @@ from scipy.optimize import curve_fit
 import os
 def linear(x,a,b):
     return a*x+b
+ftsize=18
 
 
 '''
@@ -63,9 +64,12 @@ for i in range (N):
 n, bins, patches = plt.hist(Csim, 50, color='darkblue', alpha=0.75)
 
 plt.axvline(x=C,color='r',linestyle='--')
-plt.xlabel('C ($kg.m^2.s^{-2}$)')
-plt.ylabel('Nombre doccurences')
-plt.title('Histogramme des valeurs de C par méthode MC')
+plt.xlabel('C [$kg.m^2.s^{-2}$]',fontsize=ftsize
+)
+plt.ylabel("Nombre d'occurences",fontsize=ftsize
+)
+plt.title('Histogramme des valeurs de C par méthode MC',fontsize=ftsize
+)
 #plt.text(60, .025, r'$\mu=100,\ \sigma=15$')
 #plt.xlim(40, 160)
 #plt.ylim(0, 0.03)

@@ -48,7 +48,7 @@ ydata=t12
 ### Incertitudes
 
 xerrdata=np.array([0.0]*len(xdata))
-yerrdata=np.array([1e-7]*len(ydata))
+yerrdata=ydata/100
 
 
 # if len(xliverr) >0 :
@@ -84,7 +84,7 @@ if len(xlive) == 0 :
 ### Noms axes et titre
 
 ystr='$t_{1/2}$ [s]'
-xstr='$p^2$ '
+xstr='$p^2$ [] '
 titlestr="Diffusion de charge"
 
 ### Ajustement

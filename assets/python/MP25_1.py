@@ -19,7 +19,7 @@ plt.close('all')
 ### Point en live
 
 flive=40e3
-DeltaTlive=4
+DeltaTlive=3.8
 
 dflive=1e-6*flive
 dTlive=0.01*np.sqrt(2)/10
@@ -39,7 +39,7 @@ yliverr=np.array([dTlive/DeltaTlive**2])
 f=np.array([10,50,100,200,500,1000])*1e3
 DeltaT=np.array([29.7/2,14.88/5,7.46/5,3.72/5,0.594/2,0.742/5])
 dT=np.sqrt(2)*0.01/10
-
+df = f*0.00001
 
 
 
@@ -51,7 +51,7 @@ xdata=f
 
 
 
-xerrdata=f*0.00001
+xerrdata=df
 yerrdata=dT/DeltaT**2
 
 

@@ -10,16 +10,16 @@ import numpy as np
 
 
 alpha0=30
-beta0=20
+beta0=62
 
-alpha=88
-beta=62
+alpha=118
+beta=-26
 
-ualpha=3
-ubeta=3
+ualpha=1
+ubeta=1
 
-alpha=(alpha-alpha0)*np.pi/180
-beta=(beta-beta0)*np.pi/180
+alpha=np.abs((alpha-alpha0))*np.pi/180
+beta=np.abs((beta-beta0))*np.pi/180
 
 L=5.58 # Distance entre les deux gonios. Il pourrait être habile de les rapprocher. A voir, pas sur.
 uL=0.05

@@ -6,17 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
-def affine(x,a,b):
-    return a*x+b
+
 plt.close('all')
-
-'''
-RESONNANCE PARAMETRIQUE 1
-AUTHOR: TOM PEYROT
-
-
-'''
-
 
 
 '''
@@ -124,7 +115,7 @@ if len(xlive) == 0 :
 
 ystr='$\Delta f^2$ [Hz$^2$]'
 xstr='$V_e^2$ [V$^2$]'
-titlestr='Largeur de résonance en fonction de Ve'
+titlestr="Plage d'oscillation en fonction de Ve"
 ftsize=18
 
 ### Ajustement

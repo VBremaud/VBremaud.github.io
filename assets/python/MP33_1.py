@@ -170,7 +170,7 @@ else:
 
 ### Noms axes et titre
 
-ystr=r'$\tau$[s]'
+ystr=r'$\tau$ [s]'
 xstr='$Q$ '
 titlestr="Temps de réponse en fonction du facteur de qualité"
 

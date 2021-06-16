@@ -95,7 +95,7 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-xstr='1/R[$\Omega^{-1}$]'
+xstr='1/R [$\Omega^{-1}$]'
 ystr='Q'
 titlestr='Etude du facteur de qualité du circuit RLC'
 ftsize=18

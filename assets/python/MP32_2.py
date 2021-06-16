@@ -26,7 +26,7 @@ ylive=np.array([4*np.pi**2*faslive**2])
 # ylive=[]
 
 xliverr=xlive*dGammalive/Gammalive
-yliverr=np.array([8*np.pi**2*dfaslive])
+yliverr=np.array([8*np.pi**2*dfaslive*faslive])
 
 #xliverr=[]
 #yliverr=[]
@@ -56,7 +56,7 @@ ydata=4*np.pi**2*fas**2
 xerrdata=xdata*dGamma/Gamma
 #yerrdata=np.array([10]*len(ydata))
 
-yerrdata=8*np.pi**2*dfas
+yerrdata=8*np.pi**2*dfas*fas
 
 
 if len(xliverr) >0 :

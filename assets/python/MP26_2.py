@@ -123,3 +123,7 @@ plt.legend(fontsize=ftsize)
 plt.xlabel(xstr,fontsize=ftsize)
 plt.ylabel(ystr,fontsize=ftsize)
 plt.show()
+
+# deltaT = -2 L/c + 2 L0 / c
+c = 3e8
+print("Distance L0 mesurée = "+str(a*c/2)+" +- "+str(ua*c/2)+" m")
