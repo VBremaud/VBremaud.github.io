@@ -2,64 +2,60 @@
 @Louis Heitz et Vincent Brémaud
 
 """
-
-import numpy as np
-import scipy as sp
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy.optimize import curve_fit
+import os
 
-ftsize=18
+plt.close('all')
 
 ### Point en live
-normalisation=1
-# e0
-# elive=5e-3
-# Clive=2.25e-12
-#
-# delive=0.01*1e-3
-# dClive=0.02e-12
-#
-#
-#
-#
-# xlive=np.array([1/(elive+e0)])
-# ylive=np.array([Clive])
-# xliverr=xlive*delive/(elive+e0)
-# yliverr=np.array([dClive])
-#
 
-xlive=np.array([])
-ylive=np.array([])
-xliverr=np.array([])
-yliverr=np.array([])
+Rlive = np.array([55])
+dRlive =  np.array([0.1])
+
+Uslive = np.array([-0.01])
+dUslive = np.array([0.01])
+
+Uelive = np.array([1.04])
+dUelive = np.array([0.01])
+
+
 ### Données
+Norm = 0.9 #facteur de normalisation (~0.9) avec une résistance infini en sortie.
+dNorm = 0.01
 
-normalisation=1
+R = np.array([15.5,30.5,46.9,67.6,81.5,100.1,0])
+dR = np.array([0.1]*len(R))
 
-R=np.array([0,15,35,45,70,80,100])
-Us=np.array([-1,-0.55,-0.3,-0.1,0.1,0.2,0.25])
-Ue=np.array([1,1,1,1,1,1,1])
+Us = np.array([-0.58,-0.33,-0.10,0.1,0.19,0.29,-1]) * Norm
+dUs = np.array([0.01]*len(Us))
+
+Ue = np.array([1.04]*len(Us))
+dUe = np.array([0.01]*len(Us))
 
 
-Us=Us/normalisation
-Ue=Ue/normalisation
-dR=np.array([0.5]*len(R))
-dUs=np.array([0.05]*len(Us))
-dUe=np.array([0.05]*len(Ue))
+### Traitements
 
-xdata=R
-ydata=Us/Ue
+xdata = R
+xerrdata = dR
 
-### Incertitudes
+ydata = Us/Ue / Norm
+yerrdata = ydata * np.sqrt((dUs/Us)**2+(dUe/Ue)**2+(dNorm/Norm)**2)
 
-xerrdata=dR
-yerrdata=ydata*np.sqrt((dUs/Us)**2 + (dUe/Ue)**2)
+xlive = np.array([])
+xliverr = np.array([])
+if len(Rlive)>0:
 
+    xlive=Rlive
+    xliverr=dRlive
+
+    ylive=Uslive/Uelive/Norm
+    yliverr=ylive * np.sqrt((dUslive/Uslive)**2+(dUelive/Uelive)**2+(dNorm/Norm)**2)
 
 if len(xliverr) >0 :
     xerr=np.concatenate((xerrdata,xliverr))
     yerr=np.concatenate((yerrdata,yliverr))
-
 
 if len(xliverr)== 0 :
     xerr=xerrdata
@@ -85,45 +81,46 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-xstr='$R$ [$\Omega$]'
-ystr='$U_s/U_e$ '
-titlestr="Coefficient de réflexion"
+ystr='Coefficient de réflexion Us/Ue []'
+xstr='Résistance [$\Omega$]'
+titlestr="Coefficient de réflexion en fonction de la résistance en sortie d'un câble coaxial"
+ftsize=18
 
 ### Ajustement
 
-
-def func(x,a):
-    return (x-a)/(x+a)
+def func(x,R):
+    return (x-R)/(x+R)
 
 popt, pcov = curve_fit(func, xfit, yfit,sigma=yerr[debut:fin],absolute_sigma=True)
-chi2=np.sum(((func(xfit,*popt))-yfit)**2/(yerr[debut:fin]**2))
-chi2r=chi2/len(yfit)
+
+chi2red = np.mean((yfit - func(xfit, *popt))**2/yerr[debut:fin]**2)
+print("chi2 = "+ str(chi2red))
+
 ### Récupération paramètres de fit
 
-a=popt[0]
-ua=np.sqrt(pcov[0,0])
-print("y = (x-a)/(x+a)\na = " + str(a))
-print("ua = " + str(ua))
-print('chi2 réduit : ' + str(chi2r))
-#b=er eo / S
-chi2=np.sum(((func(xfit,*popt))-yfit)**2/(yerr[debut:fin]**2))
+print("\n"+titlestr)
+R=popt[0]
+uR=np.sqrt(pcov[0,0])
+print("y = (x-R)/(x+R)")
 
-print('\nSoit Zc = ' + str(a) + ' +- ' + str(ua) + ' Ohm\n')
+
 ### Tracé de la courbe
-xplot=np.linspace(R[0],R[-1]*1.05,100)
 
 plt.figure(figsize=(10,9))
-plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',markersize=4)
+xtest = np.linspace(np.min(xdata),np.max(xdata),100)
+
+plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Données')
+plt.plot(xtest,func(xtest,*popt),label='Ajustement ')
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,fmt='o',label='Point ajouté')
-plt.plot(xplot,func(xplot,*popt),label='Ajustement ')
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
 plt.xticks(fontsize=ftsize)
-#plt.axis([0,3.600,0,5])
-#plt.axis([0,xdata[-1]*1.05,0,ydata[-1]*1.05])
 plt.yticks(fontsize=ftsize)
 plt.legend(fontsize=ftsize)
 plt.xlabel(xstr,fontsize=ftsize)
 plt.ylabel(ystr,fontsize=ftsize)
 plt.show()
+
+print("\nMesure de l'impédance caractéristique d'un câble coaxial")
+print(" Rimp = "+str(R)+" +- "+str(uR)+" Ohm")
