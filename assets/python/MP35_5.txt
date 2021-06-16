@@ -1,0 +1,11 @@
+-> Il faut changer les coefficients de régression linéaire à la deuxième ligne dans le fichier txt
+-> Il faut simplement mettre la pression en voie 1, le volume en voie 2
+-> Puis copier-coller le code dans l'invite Igor, et normalement ça marche
+
+Duplicate :scope:CH1 Pression
+•Pression=10^5*(3.957*Pression + 2.657)
+•Duplicate :scope:CH2 Volume
+•Volume=(32+4.2*Volume)/10^6
+•Display Pression vs Volume
+•Integrate/METH=1 Pression/X=Volume/D=Pression_INT
+•Display Pression_INT vs Volume
