@@ -14,14 +14,20 @@ plt.close('all')
 
 
 ### Point en live
+R1=1000
+R2live=2500
+Glive=3.51
 
 
-xlive=np.array([0.800])*1e-3
-ylive=np.array([20])+273.15# Resistance mesurée en live
+dR2live=1
+dGlive=0.1
+
+xlive=np.array([R2live])
+ylive=np.array([Glive])
 
 
-xliverr=(np.zeros(len(xlive))+0.005)*1e-3
-yliverr=np.zeros(len(ylive))+1+0.003*ylive
+xliverr=xlive*dR2live/R2live
+yliverr=ylive*dGlive/Glive
 
 #xliverr=[]
 #yliverr=[]
@@ -29,15 +35,17 @@ yliverr=np.zeros(len(ylive))+1+0.003*ylive
 ### Données
 
 R1=1000
-R2=np.array([])
-G=np.array([])
+R2=np.array([2,3,4])*1e3
+G=1 + R2/R1 + 0.01
 
 
 ydata=G
 xdata=R2
+
+
 ### Incertitudes
 
-dG=np.zeros(len(G))+1
+dG=np.zeros(len(G))+0.1
 dR=np.zeros(len(R2))+1
 xerrdata=dR
 yerrdata=dG
@@ -72,9 +80,9 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-xstr='Resistance R2 de lampplificateur ($\Omega$) '
-ystr='Gain de lamplificateur'
-titlestr='Caractérisation dun amplificateur non inverseur.'
+xstr="Résistance R2 de l'amplificateur ($\Omega$) "
+ystr="Gain de l'amplificateur"
+titlestr="Caractérisation d'un amplificateur non inverseur."
 ftsize=18
 
 ### Ajustement
@@ -94,10 +102,10 @@ print("ua = " + str(ua) + "\nub = " + str(ub) )
 ### Tracé de la courbe
 
 plt.figure(figsize=(10,9))
-plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,marker='o', color='b',mfc='white',ecolor='g',linestyle='',capsize=8,label='Preparation')
+plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Preparation')
 if len(xlive)>0:
-    plt.errorbar(xlive,ylive,yerr=yliverr,marker='o', markersize=8, color='k',mfc='darkred',ecolor='k',linestyle='',capsize=8,label='Point ajouté')
-plt.plot(xfit,func(xfit,*popt), color='r', linestyle='--',label='Ajustement ')
+    plt.errorbar(xlive,ylive,yerr=yliverr,fmt='o',label='Point ajouté')
+plt.plot(xfit,func(xfit,*popt),label='Ajustement ')
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
 plt.xticks(fontsize=ftsize)
