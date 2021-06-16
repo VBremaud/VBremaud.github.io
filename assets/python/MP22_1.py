@@ -80,8 +80,8 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-xstr="Résistance R2 de l'amplificateur ($\Omega$) "
-ystr="Gain de l'amplificateur"
+xstr="Résistance R2 de l'amplificateur [$\Omega$] "
+ystr="Gain de l'amplificateur []"
 titlestr="Caractérisation d'un amplificateur non inverseur."
 ftsize=18
 
