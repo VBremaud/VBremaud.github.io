@@ -33,14 +33,14 @@ yliverr=np.sqrt((Uvidelive*dUvidelive/Utubelive**2/ylive)**2 + (Uvidelive**2/Utu
 
 ### Données
 
-Uvide=np.array([19.2,38.5,76.8,114.3,150.3,186.6,220.4,252.8,283.5,312.4,339.2])
-Utube=np.array([12.28,14.64,15.43,15.57,15.49,15.35,15.16,14.95,14.71,14.45,14.16])
+Uvide=np.array([19.2,38.5,76.8,114.3,150.3,186.6,220.4,252.8,283.5,312.4,339.2]) #mV
+Utube=np.array([12.28,14.64,15.43,15.57,15.49,15.35,15.16,14.95,14.71,14.45,14.16]) #mV
 freq=np.array([500,1e3,2e3,3e3,4e3,5e3,6e3,7e3,8e3,9e3,1e4])
 
 
 dfreq=1+np.zeros(len(freq))
 dUvide=1+np.zeros(len(Uvide))
-dUtube=1+np.zeros(len(Utube))
+dUtube=0.1+np.zeros(len(Utube))
 
 
 xdata=freq
@@ -51,8 +51,20 @@ ydata=np.sqrt(Uvide**2-Utube**2)/Utube
 
 xerrdata=np.array([0.2]*len(xdata))
 
-yerrdata=np.sqrt((Uvide*dUvide/Utube**2/ydata)**2 + (Uvide**2/Utube**3*dUtube/ydata)**2)
+#yerrdata=np.sqrt((Uvide*dUvide/Utube**2/ydata)**2 + (Uvide**2/Utube**3*dUtube/ydata)**2) marche aussi
 
+yerrdata = np.zeros(len(ydata))
+
+N=1000
+for j in range(len(ydata)):
+    UV = np.zeros(N)
+    UT = np.zeros(N)
+    Y = np.zeros(N)
+    for i in range(N):
+        UV[i] = Uvide[j]+dUvide[j]*np.random.randn()
+        UT[i] = Utube[j]+dUtube[j]*np.random.randn()
+    Y = np.sqrt(UV**2-UT**2)/UT
+    yerrdata[j] = np.std(Y)
 
 if len(xliverr) >0 :
     xerr=np.concatenate((xerrdata,xliverr))
@@ -93,6 +105,9 @@ def func(x,a,b):
     return a + b*x
 
 popt, pcov = curve_fit(func, xfit, yfit,sigma=yerr[debut:fin],absolute_sigma=True)
+
+chi2red = np.mean((yfit - func(xfit, *popt))**2/yerr[debut:fin]**2)
+print("chi2 = "+ str(chi2red))
 
 ### Récupération paramètres de fit
 
