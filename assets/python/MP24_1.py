@@ -1,18 +1,18 @@
+"""
+@Louis Heitz et Vincent Brémaud
+
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
 
-
-def linear(x,a,b):
-    return a*x+b
-
-
 plt.close('all')
+
 
 '''
 -----------------------------------------------------------------------------------------------------------------
---------------------------------------BRUIT THERMIQUE------------------------------------------------
+--------------------------------------PAS DE QUANTIFICATION------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------
 '''
 
@@ -85,8 +85,8 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-xstr='Dynamique (V)'
-ystr='Pas de tension (mV)'
+xstr='Dynamique [V]'
+ystr='Pas de tension [mV]'
 titlestr='Mesure de Bruit'
 ftsize=18
 

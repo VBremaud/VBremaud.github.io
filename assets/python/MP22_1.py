@@ -6,9 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
-def linear(x,a,b):
-    return a*x+b
-
 
 plt.close('all')
 

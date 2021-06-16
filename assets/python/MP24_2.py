@@ -1,10 +1,11 @@
+"""
+@Louis Heitz et Vincent Brémaud
+
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
-def linear(x,a,b):
-    return a*x+b
-
 
 plt.close('all')
 
@@ -24,7 +25,7 @@ MaxDSPlive=-80
 
 dG0live=50
 dRlive=1
-dDSPlive=1
+dDSPlive=1/4 #à voir
 
 
 
@@ -51,7 +52,7 @@ MaxDSPlog=np.array([-90.2,-87.4,-85.65,-83.70,-82.27,-80.80,-79.95,-78.80,-78.11
 Veff2=10**(MaxDSPlog/10)/G0**2
 
 dG0=50
-dDSP=np.array([2,2,2,2,1,1,1,0.5,0.5,0.5])
+dDSP=np.array([2,2,2,2,1,1,1,0.5,0.5,0.5])/4 #à voir
 dR=np.zeros(len(R))+1
 
 xdata=R
@@ -93,7 +94,7 @@ if len(xlive) == 0 :
 ### Noms axes et titre
 
 xstr=r'R [$\Omega$]'
-ystr='$V_{eff}^2$ [$V^2$]'
+ystr='$V_{eff}^2$  [$V^2$]'
 titlestr='Mesure de bruit thermique'
 ftsize=18
 
