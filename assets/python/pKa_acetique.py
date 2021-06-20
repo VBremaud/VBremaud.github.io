@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
-def linear(x,a,b):
+def func(x,a,b):
     return a*x+b
 
 
@@ -161,7 +161,7 @@ ftsize=18
 
 ### Tracé de la courbe
 xfitth=np.linspace(np.min(xdata),np.max(xdata),100)
-fitth=func(xfitth,*popt)
+#fitth=func(xfitth,*popt)
 
 
 plt.figure(figsize=(13,9))
