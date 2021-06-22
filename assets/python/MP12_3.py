@@ -81,7 +81,7 @@ if len(xlive) == 0 :
 ### Noms axes et titre
 
 xstr='Tension de polarisation [V]'
-ystr='Temps de réponse [s]'
+ystr='Capacité de jonction [F]'
 titlestr="Temps de réponse d'une photodiode"
 ftsize=18
 
