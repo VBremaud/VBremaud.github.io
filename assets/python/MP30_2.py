@@ -35,6 +35,8 @@ D=7.4e-2
 d=1.3e-2
 s=np.pi*d**2/4
 V=L*(np.pi*D**2/4)
+dV=1e-5
+ds=1e-5
 
 T=np.array([85/7,95.2/9,104.5/11,136.4/12])*1e-3
 longueur=np.array([6.9,5.1,3.85,6])*1e-2 #(2pi/T0) = c sqrt(s/(l*V)
@@ -100,6 +102,10 @@ a,b=popt
 ua,ub=np.sqrt(pcov[0,0]),np.sqrt(pcov[1,1])
 print("y = b(x+a) \na = " + str(a) + "\nb = " + str(b))
 print("ua = " + str(ua) + "\nub = " + str(ub) )
+
+c=np.sqrt(4*np.pi**2*V/(b*s))
+uc=np.sqrt((dV/V)**2+(ds/s)**2+(ub/b)**2)*c/2
+print('\nSoit c= ' + str(c) + ' +- ' + str(uc) + ' m/s')
 
 ### Tracé de la courbe
 

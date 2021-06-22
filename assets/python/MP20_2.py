@@ -12,42 +12,29 @@ ftsize=18
 
 ### Point en live
 
-flive=800
-Velive=100*1e-3
-Vslive=350*1e-3
-
-dflive=1
-dVelive=1e-3
-dVslive=1e-3
-
-xlive=np.array([(2*np.pi*flive)**2])
-ylive=np.array([(Vslive/Velive)**2])
-xliverr=np.array([8*np.pi**2*flive*dflive])
-yliverr=ylive*np.sqrt((2*dVelive/Velive)**2 + (2*dVslive/Vslive)**2)
-
-
-xlive=np.array([])
-ylive=np.array([])
-xliverr=np.array([])
-yliverr=np.array([])
-### Données
-'''
-
-Z=47 # Zero par mesure au reglet en bas
-x=np.array([100,80,70,60,50,49,48,46,45,44,43,42,40,30,20])
-x=Z-x
-U1=np.array([5.022,5.024,5.024,5.024,5.024,5.024,5.024,5.022,5.022,5.022,5.022,5.022,5.022,5.022,5.020]) # Tension excitatrice crête crête
-U2=np.array([691,653,527,342,123,96,58,11,20,45,65,85,134,338,523])*1e-3 # Tension au borne de la bobine
-R=102.5 #pm RLC metre
+x0=47
+R=102.5
 Omega=2*np.pi*500
 
+poslive=42
+U1live=5.023
+U2live=100*1e-3
 
-plt.figure()
-ax=plt.subplot()
-ax.plot(x,U2/(U1*Omega/R),'bo')
-ax.set_ylabel('M')
-ax.set_xlabel('x(mm)')
-'''
+dposlive=0.5
+dU1live=0.005
+dU2live=0.005
+
+xlive=np.array([poslive-x0])
+ylive=np.array([U2live/(U1live*Omega/R)])
+
+xliverr=np.array([dposlive])
+yliverr=ylive*np.sqrt((dU2live/U2live)**2 + (dU1live/U1live)**2)
+
+# xlive=np.array([])
+# ylive=np.array([])
+# xliverr=np.array([])
+# yliverr=np.array([])
+### Données
 
 x0=47 #Position du zero.
 x=np.array([100,80,70,60,50,49,48,46,45,44,43,42,40,30,20])
@@ -81,8 +68,8 @@ yerrdata=ydata*np.sqrt((dU2/U2)**2 + (dU1/U1)**2)
 ### Données fit
 
 
-debut=0
-fin=len(xdata)+1
+debut=9
+fin=14
 
 if len(xlive) >0 :
     xlive=np.array(xlive)
@@ -141,19 +128,4 @@ plt.legend(fontsize=ftsize)
 plt.xlabel(xstr,fontsize=ftsize)
 plt.ylabel(ystr,fontsize=ftsize)
 plt.show()
-
-
-###Extraction paramètres
-#Us^2/Ue^2= (r/R)^2 + L^2 omega^2 / R^2
-
-
-# A haute fréquence : comportement capacitif !!
-
-r=R*np.sqrt(a)
-L=R*np.sqrt(b)
-ur=r*0.5*ua/a
-uL=L*0.5*ub/b
-print('\nSoit r = ' + str(r) + ' +- ' + str(ur) + ' Ohm')
-print('\nEt L = ' + str(L) + ' +- ' + str(uL) + ' H')
-
 

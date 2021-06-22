@@ -1,61 +1,79 @@
-"""
-@Louis Heitz et Vincent Brémaud
+'''
 
-"""
+@author: Louis Heitz, Vincent Brémaud
+
+'''
+
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+
+def linear(x,a,b):
+    return a*x+b
+
+def expo(x,a,b):
+    return a*np.exp(20000*b/x)
+def poly(x,a,b,c):
+    return a*x**2+b*x+c
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
+def linear(x,a,b):
+    return a*x+b
+
 
 plt.close('all')
 
+
 ### Point en live
 
-Rlive = np.array([55])
-dRlive =  np.array([0.1])
+Lambda0live=0.027
+LambdaGlive=3.70e-2
 
-Uslive = np.array([-0.01])
-dUslive = np.array([0.01])
+dLambda0live=0.001
+dLambdaGlive=0.002
 
-Uelive = np.array([1.04])
-dUelive = np.array([0.01])
+xlive=np.array([1/Lambda0live**2])
+ylive=np.array([1/LambdaGlive**2])
 
-
-### Données
-Norm = 0.9 #facteur de normalisation (~0.9) avec une résistance infini en sortie.
-dNorm = 0.01
-
-R = np.array([15.5,30.5,46.9,67.6,81.5,100.1,0])
-dR = np.array([0.1]*len(R))
-
-Us = np.array([-0.58,-0.33,-0.10,0.1,0.19,0.29,-1]) * Norm
-dUs = np.array([0.01]*len(Us))
-
-Ue = np.array([1.04]*len(Us))
-dUe = np.array([0.01]*len(Us))
+xliverr=np.array([2*dLambda0live/Lambda0live**3])
+yliverr=np.array([2*dLambdaGlive/LambdaGlive**3])
 
 
-### Traitements
 
-xdata = R
-xerrdata = dR
+#xliverr=[]
+#yliverr=[]
 
-ydata = Us/Ue / Norm
-yerrdata = ydata * np.sqrt((dUs/Us)**2+(dUe/Ue)**2+(dNorm/Norm)**2)
+### Donnéesxdata=Ir
 
-xlive = np.array([])
-xliverr = np.array([])
-if len(Rlive)>0:
+Lambda0=np.array([0.026424 , 0.0266075, 0.027158 , 0.0284425, 0.030094 , 0.030461 ,0.031562 , 0.0324795])
 
-    xlive=Rlive
-    xliverr=dRlive
+LambdaG=np.array([3.40,3.40,3.49,3.99,4.1,4.55,5,5.2])*1e-2
+#LambdaG=dx
 
-    ylive=Uslive/Uelive/Norm
-    yliverr=ylive * np.sqrt((dUslive/Uslive)**2+(dUelive/Uelive)**2+(dNorm/Norm)**2)
+dLambda0=1e-4
+dLambdaG=1e-3
+
+
+xdata=1/Lambda0**2
+ydata=1/LambdaG**2
+
+
+### Incertitudes
+
+
+xerrdata=2*dLambda0/Lambda0**3
+yerrdata=2*dLambdaG/LambdaG**3
+
 
 if len(xliverr) >0 :
     xerr=np.concatenate((xerrdata,xliverr))
     yerr=np.concatenate((yerrdata,yliverr))
+
 
 if len(xliverr)== 0 :
     xerr=xerrdata
@@ -81,38 +99,33 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-ystr='Coefficient de réflexion Us/Ue []'
-xstr='Résistance [$\Omega$]'
-titlestr="Coefficient de réflexion en fonction de la résistance en sortie d'un câble coaxial"
+ystr='$1/\lambda_g^2 $ [1/m2]'
+xstr='$1/\lambda_0^2$ [1/m2]'
+titlestr='Relation de dispersion dans le guide'
 ftsize=18
 
 ### Ajustement
 
-def func(x,R):
-    return (x-R)/(x+R)
+def func(x,a,b):
+    return a*x + b
 
 popt, pcov = curve_fit(func, xfit, yfit,sigma=yerr[debut:fin],absolute_sigma=True)
 
-chi2red = np.mean((yfit - func(xfit, *popt))**2/yerr[debut:fin]**2)
-print("chi2 = "+ str(chi2red))
-
 ### Récupération paramètres de fit
 
-print("\n"+titlestr)
-R=popt[0]
-uR=np.sqrt(pcov[0,0])
-print("y = (x-R)/(x+R)")
-
+a,b=popt
+ua,ub=np.sqrt(pcov[0,0]),np.sqrt(pcov[1,1])
+print("y = ax  + b \na= " + str(a) + "\nb = " + str(b))
+print("ua = " + str(ua) + "\nub = " + str(ub) )
 
 ### Tracé de la courbe
 
 plt.figure(figsize=(10,9))
-xtest = np.linspace(np.min(xdata),np.max(xdata),100)
+plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Preparation')
 
-plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Données')
-plt.plot(xtest,func(xtest,*popt),label='Ajustement ')
 if len(xlive)>0:
-    plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,fmt='o',label='Point ajouté')
+    plt.errorbar(xlive,ylive,yerr=yliverr,fmt='o',label='Point ajouté')
+plt.plot(xfit,func(xfit,*popt),label='Ajustement ')
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
 plt.xticks(fontsize=ftsize)
@@ -122,5 +135,40 @@ plt.xlabel(xstr,fontsize=ftsize)
 plt.ylabel(ystr,fontsize=ftsize)
 plt.show()
 
-print("\nMesure de l'impédance caractéristique d'un câble coaxial")
-print(" Rimp = "+str(R)+" +- "+str(uR)+" Ohm")
+
+### Extraction du parametre de guide
+'''
+Pour plus d'info a ce sujet on se refere au CRVB
+Pour l'effet GUNN il y a aussi le docuent de chez ORITEL
+'''
+
+
+aguide=1/(np.sqrt(4*np.abs(b)))
+daguide=np.sqrt(1/4)*ub/b**2/(2*np.sqrt(1/np.abs(b)))
+print('Largeur du guide= '+str(aguide*100) + ' +- ' + str(daguide*100) + ' cm')
+
+### Verification hypothèses
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
