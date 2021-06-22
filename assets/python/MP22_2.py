@@ -16,22 +16,64 @@ rendement=0 # Mettre le rendement à 0 pour regarder le gain en courant. A 1 pou
 
 R=5
 
-ielive=10e-3
-uoutlive=4.1
+ielive=2e-3
+uelive=1
+uoutlive=0.5
+
+duelive=0.05
+ig1live=50e-3
+ig2live=70e-3
+ug1live=15
+ug2live=15
+
+Pelive=11e-3
+
 
 dielive=0.1e-3
-dutoutlive=0.1
-# Pg1live=
-# Pg2live=
+duoutlive=0.05
+
+
+
+dPe=0.5e-3
+dPg1=5e-2
+dPg2=5e-2
+
 
 ioutlive=uoutlive/R
-xlive=np.array([ielive])
-ylive=np.array([ioutlive])
+Poutlive=ioutlive*uoutlive
+dPout=Poutlive*duoutlive/ioutlive/R
+Pg1live=ig1live*ug1live
+Pg2live=ig2live*ug2live
+
+if rendement == 0 :
+    xlive=np.array([ielive])
+    ylive=np.array([ioutlive])
 
 
 
-xliverr=np.array([dielive])
-yliverr=np.array([dutoutlive/R])
+    xliverr=np.array([dielive])
+    yliverr=np.array([duoutlive/R])
+
+if rendement ==1 :
+    etalive=Poutlive/(Pelive+Pg1live+Pg2live+Poutlive)
+    xlive=np.array([uelive])
+    ylive=np.array([etalive])
+    xliverr=np.array([duelive])
+    N=1000
+    Pouti=np.zeros(N)
+    Pei=np.zeros(N)
+    Pg1i=np.zeros(N)
+    Pg2i=np.zeros(N)
+    for i in range(N):
+        Pouti[i]=Poutlive+dPout*np.random.randn()
+        Pei[i]=Pelive+dPe*np.random.randn()
+        Pg1i[i]=Pg1live+dPg1*np.random.randn()
+        Pg2i[i]=Pg2live+dPg2*np.random.randn()
+    etai=Pouti/(Pei+Pg1i+Pg2i+Pouti)
+    yliverr=np.array([np.std(etai)])
+    xliverr=np.array([duelive])
+
+
 # xlive=[]
 # ylive=[]
 # xliverr=[]
@@ -75,7 +117,7 @@ if rendement==1:
     ydata=eta
 
 die=0.01*ie
-diout=0.01*iout
+diout=0.05*iout
 deta=0.05*eta
 
 ### Incertitudes
