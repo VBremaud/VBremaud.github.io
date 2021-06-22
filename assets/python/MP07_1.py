@@ -9,43 +9,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-def linear(x,a,b):
-    return a*x+b
-
-def expo(x,a,b):
-    return a*np.exp(20000*b/x)
-def poly(x,a,b,c):
-    return a*x**2+b*x+c
-
-
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.optimize import curve_fit
-import os
-def linear(x,a,b):
-    return a*x+b
-
-
 plt.close('all')
 
 
 ### Point en live
 
-Lambda0live=0.027
-LambdaGlive=3.70e-2
+Glive=6.1
+foc2live=60e-2
 
-dLambda0live=0.001
-dLambdaGlive=0.002
+dGlive=0.01
+dfoc2live=0.05e-2
 
-xlive=np.array([1/Lambda0live**2])
-ylive=np.array([1/LambdaGlive**2])
+xlive=np.array([foc2live])
+ylive=np.array([Glive])
 
-xliverr=np.array([2*dLambda0live/Lambda0live**3])
-yliverr=np.array([2*dLambdaGlive/LambdaGlive**3])
+xliverr=np.array([dfoc2live])
+yliverr=np.array([dGlive])
 
 
-xlive=[]
-xliverr=[]
+# xlive=[]
+# xliverr=[]
 #yliverr=[]
 
 ### Données
@@ -141,6 +124,6 @@ plt.show()
 ### Extraction du parametre de guide
 
 
-print('\nSoit f1= '+str(100/a) + ' +- ' + str(100*ua/a**2) + ' cm')
+print('\nSoit f= '+str(100/a) + ' +- ' + str(100*ua/a**2) + ' cm')
 
 ### Verification hypothèses
