@@ -12,42 +12,23 @@ ftsize=18
 
 ####### Tracer les pertes séparément puis la somme des pertes, comme pour le transfo
 
-rendement = 1 # Booléen mettre à 1 pour avoir le rendement, à 0 pour avoir les pertes
+rendement = 0 # Booléen mettre à 1 pour avoir le rendement, à 0 pour avoir les pertes
 
 ### Point en live
 
-Pinducteurlive=84
+Pinducteurlive=84 #mettre à 0 ou inférieur à 0 pour ne pas afficher le point
 Pinduitlive=80
 Iinduitlive=0.350
 Pmcclive=155
 Imcclive=4.7
 
-
-rinducteur=494
-rinduit=16
-
-Psansind= 19 #Envoyé dans la MCC
-Isansind=0.630 #Pertes effets Joule dans MCC
-
-Pavecind=58
-Iavecind=1.8
-
-Iinducteur=0.4
-Uinducteur=220
+dPinducteurlive = 1
+dPinduitlive = 1
+dIinduitlive = 0.01
+dPmcclive = 1
+dImcclive = 0.05
 
 
-
-xlive=[]
-ylive=[]
-
-#xlive=[]
-#ylive=[]
-
-xliverr=np.array([])
-yliverr=np.array([])
-
-#xliverr=[]
-#yliverr=[]
 
 ### Données
 
@@ -58,41 +39,51 @@ Iinduit=np.array([0.310,0.360,0.422,0.512,0.655,0.682,0.780,0.964])
 Pmcc=np.array([139,149,164,186,232,238,261,317])
 Imcc=np.array([4.15,4.5,4.92,5.59,6.65,6.84,7.52,8.77])
 
+dPinducteur = np.array([0.1]*len(Pinducteur))
+dPinduit = np.array([0.1]*len(Pinduit))
+dIinduit = np.array([0.001]*len(Iinduit))
+dPmcc = np.array([0.1]*len(Pmcc))
+dImcc = np.array([0.005]*len(Imcc))
+
 rinducteur=494
+drinducteur = 0.1
+
 rinduit=16
+drinduit = 0.01
 
 Psansind= 19 #Envoyé dans la MCC
+dPsansind = 0.1
+
 Isansind=0.630 #Pour calculer pertes effets Joule dans MCC
+dIsansind= 0.001
+
 
 Pavecind=58
+dPavecind = 0.1
+
 Iavecind=1.8
+dIavecind = 0.01
 
 Iinducteur=0.4
+dIinducteur = 0.001
+
 Uinducteur=220
+dUinducteur = 0.1
 
 rmcc=0.83
+drmcc=0.01
 
 Omega=1500*2*np.pi/60
-
-dPinduit=1
-dPinducteur=1
-dPmcc=1
-dPmccpertes=1
-
-dPmeca2=0.1
-dPfer2=0.1
-
-dIinduit=0.05
-
+dOmega=1*2*np.pi/60
 
 
 # A vérifier
 
-Pmccpertes=(0.089*Omega + 7.4e-5 * Omega**2) + rmcc*Imcc**2 #Données à vérifier ?
+Pmccpertes=(0.089*Omega + 7.4e-5 * Omega**2) + rmcc*Imcc**2
 
-Pmeca2 = Psansind - (0.089*Omega + 7.4e-5 * Omega**2) - 0.98*Isansind**2 #Pertes méca dans 2ieme machine
+Pmeca2 = Psansind - (0.089*Omega + 7.4e-5 * Omega**2) - rmcc*Isansind**2 #Pertes méca dans 2ieme machine
 
-Pfer2= Pavecind + Uinducteur*Iinducteur - (0.089*Omega + 7.4e-5 * Omega**2) - 0.98*Iavecind**2 - Pmeca2 - rinducteur*Iinducteur**2 #On fournit via MMCC et inducteur
+Pfer2= Pavecind + Uinducteur*Iinducteur - (0.089*Omega + 7.4e-5 * Omega**2) - rmcc*Iavecind**2 - Pmeca2 - rinducteur*Iinducteur**2 #On fournit via MMCC et inducteur
 
 #ydata1= (Pinducteur + Pmcc - Pmccpertes - rinducteur*Iinducteur**2 - rinduit*Iinduit**2 - Pmeca2 - Pfer2)/(Pinducteur+Pmcc-Pmccpertes) #rendement calculé
 
@@ -120,97 +111,151 @@ if rendement ==0:
 
 N=1000
 
-if rendement ==1 :
-    yerrdata=[]
-    xerrdata=[]
+Pinduiti=np.zeros((N,len(xdata)))
+Pinducteuri=np.zeros((N,len(xdata)))
+Pmcci=np.zeros((N,len(xdata)))
+Iinduiti=np.zeros((N,len(xdata)))
+Imcci=np.zeros((N,len(xdata)))
+rinducteuri=np.zeros(N)
+rinduiti=np.zeros(N)
+Pavecindi=np.zeros(N)
+Psansindi=np.zeros(N)
+Iavecindi=np.zeros(N)
+Isansindi=np.zeros(N)
+Iinducteuri=np.zeros(N)
+Uinducteuri=np.zeros(N)
+rmcci=np.zeros(N)
+Omegai=np.zeros(N)
+
+Y11=np.zeros((N,len(xdata)))
+Y12=np.zeros((N,len(xdata)))
+Y21=np.zeros((N,len(xdata)))
+Y22=np.zeros((N,len(xdata)))
+
+Pmccpertesi = np.zeros((N,len(xdata)))
+Pmeca2i = np.zeros(N)
+Pfer2i = np.zeros(N)
+
+for i in range(N):
     for k in range(len(xdata)):
-        Pinduiti=np.zeros(N)
-        Pinducteuri=np.zeros(N)
-        Pmcci=np.zeros(N)
-        Pmccpertesi=np.zeros(N)
-        for i in range(N):
-            Pinduiti[i]=Pinduit[k]+dPinduit*np.random.randn()
-            Pinducteuri[i]=Pinducteur[k]+dPinducteur*np.random.randn()
-            Pmcci[i]=Pmcc[k]+dPmcc*np.random.randn()
-            Pmccpertesi[i]=Pmccpertes[k]+dPmccpertes*np.random.randn()
-        eta=Pinduiti/(Pinducteuri+Pmcci-Pmccpertesi)
-        yerrdata.append(np.std(eta))
-        xerrdata.append(np.std(Pinduiti))
-    xerrdata=np.array(xerrdata)
-    yerrdata=np.array(yerrdata)
+        Pinduiti[i][k]=Pinduit[k]+dPinduit[k]*np.random.randn()
+        Pinducteuri[i][k]=Pinducteur[k]+dPinducteur[k]*np.random.randn()
+        Pmcci[i][k]=Pmcc[k]+dPmcc[k]*np.random.randn()
+        Iinduiti[i][k]=Iinduit[k]+dIinduit[k]*np.random.randn()
+        Imcci[i][k]=Imcc[k]+dImcc[k]*np.random.randn()
 
-    yerrdata1=[]
-    xerrdata1=[]
-    for k in range(len(xdata)):
-        Pinduiti=np.zeros(N)
-        Pinducteuri=np.zeros(N)
-        Pmcci=np.zeros(N)
-        Pmccpertesi=np.zeros(N)
-        Pmeca2i=np.zeros(N)
-        Pfer2i=np.zeros(N)
-        for i in range(N):
-            Pinduiti[i]=Pinduit[k]+dPinduit*np.random.randn()
-            Pinducteuri[i]=Pinducteur[k]+dPinducteur*np.random.randn()
-            Pmcci[i]=Pmcc[k]+dPmcc*np.random.randn()
-            Pmccpertesi[i]=Pmccpertes[k]+dPmccpertes*np.random.randn()
-            Pmeca2i[i]=Pmeca2+dPmeca2*np.random.randn()
-            Pfer2i[i]=Pfer2+dPfer2*np.random.randn()
-        y=  (Pinducteuri + Pmcci - Pmccpertesi - rinducteur*Iinducteur**2 - rinduit*Iinduit[k]**2 - Pmeca2i -  Pfer2i)/(Pinducteuri+Pmcci-Pmccpertesi)
-        yerrdata1.append(np.std(y))
-        xerrdata1.append(np.std(Pinduiti))
-    xerrdata1=np.array(xerrdata1)
-    yerrdata1=np.array(yerrdata1)
+    rinducteuri[i]=rinducteur+drinducteur*np.random.randn()
+    rinduiti[i]=rinduit+drinduit*np.random.randn()
+    Pavecindi[i]=Pavecind+dPavecind*np.random.randn()
+    Psansindi[i]=Psansind+dPsansind*np.random.randn()
+    Iavecindi[i]=Iavecind+dIavecind*np.random.randn()
+    Isansindi[i]=Isansind+dIsansind*np.random.randn()
+    Iinducteuri[i]=Iinducteur+dIinducteur*np.random.randn()
+    Uinducteuri[i]=Uinducteur+dUinducteur*np.random.randn()
+    rmcci[i]=rmcc+drmcc*np.random.randn()
+    Omegai[i]=Omega+dOmega*np.random.randn()
 
+    Pmccpertesi[i] =(0.089*Omegai[i] + 7.4e-5 * Omegai[i]**2) + rmcci[i]*Imcci[i]**2
+    Pmeca2i[i] = Psansindi[i] - (0.089*Omegai[i] + 7.4e-5 * Omegai[i]**2) - rmcci[i]*Isansindi[i]**2
+    Pfer2i[i]= Pavecindi[i] + Uinducteuri[i]*Iinducteuri[i] - (0.089*Omegai[i] + 7.4e-5 * Omegai[i]**2) - rmcci[i]*Iavecindi[i]**2 - Pmeca2i[i] - rinducteuri[i]*Iinducteuri[i]**2
 
-if rendement ==0:
-    yerrdata=[]
-    xerrdata=[]
-    for k in range(len(xdata)):
-        Pinduiti=np.zeros(N)
-        Pinducteuri=np.zeros(N)
-        Pmcci=np.zeros(N)
-        Pmccpertesi=np.zeros(N)
+    Y11[i]= Pinduiti[i]/(Pinducteuri[i]+Pmcci[i]-Pmccpertesi[i])
+    Y12[i]= (Pinducteuri[i] + Pmcci[i] - Pmccpertesi[i] - rinducteuri[i]*Iinducteuri[i]**2 - rinduiti[i]*Iinduiti[i]**2 - Pmeca2i[i] -  Pfer2i[i])/(Pinducteuri[i]+Pmcci[i]-Pmccpertesi[i])
 
-        for i in range(N):
-            Pinduiti[i]=Pinduit[k]+dPinduit*np.random.randn()
-            Pinducteuri[i]=Pinducteur[k]+dPinducteur*np.random.randn()
-            Pmcci[i]=Pmcc[k]+dPmcc*np.random.randn()
-            Pmccpertesi[i]=Pmccpertes[k]+dPmccpertes*np.random.randn()
-        y=Pinducteuri+Pmcci-Pmccpertesi -Pinduiti
-        yerrdata.append(np.std(y))
-        xerrdata.append(np.std(Pinduiti))
-    xerrdata=np.array(xerrdata)
-    yerrdata=np.array(yerrdata)
+    Y21[i]= (Pinducteuri[i]+Pmcci[i]-Pmccpertesi[i]) -Pinduiti[i]
+    Y22[i]= rinducteuri[i]*Iinducteuri[i]**2 + rinduiti[i]*Iinduiti[i]**2 + Pmeca2i[i] + Pfer2i[i]
 
-    yerrdata1=[]
-    xerrdata1=[]
-    for k in range(len(xdata)):
-        Pinduiti=np.zeros(N)
-        Pinducteuri=np.zeros(N)
-        Pmcci=np.zeros(N)
-        Pmccpertesi=np.zeros(N)
-        Pmeca2i=np.zeros(N)
-        Pfer2i=np.zeros(N)
-        Iinduiti=np.zeros(N)
-        for i in range(N):
-            Pinduiti[i]=Pinduit[k]+dPinduit*np.random.randn()
-            Pinducteuri[i]=Pinducteur[k]+dPinducteur*np.random.randn()
-            Pmcci[i]=Pmcc[k]+dPmcc*np.random.randn()
-            Pmccpertesi[i]=Pmccpertes[k]+dPmccpertes*np.random.randn()
-            Pmeca2i[i]=Pmeca2+dPmeca2*np.random.randn()
-            Pfer2i[i]=Pfer2+dPfer2*np.random.randn()
-            Iinduiti[i]=Iinduit[k]+dIinduit*np.random.randn()
-        y=  rinducteur*Iinducteur**2 + rinduit*Iinduiti**2 + Pmeca2i + Pfer2i
-        yerrdata1.append(np.std(y))
-        xerrdata1.append(np.std(Pinduiti))
-    xerrdata1=np.array(xerrdata1)
-    yerrdata1=np.array(yerrdata1)
+xerrdata=np.array([np.std(Pinduiti.T[:][k]) for k in range(len(xdata))])
 
+if rendement == 1 :
+    yerrdata = np.array([np.std(Y11.T[:][k]) for k in range(len(xdata))])
+    yerrdata1 = np.array([np.std(Y12.T[:][k]) for k in range(len(xdata))])
 
+else:
+    yerrdata = np.array([np.std(Y21.T[:][k]) for k in range(len(xdata))])
+    yerrdata1 = np.array([np.std(Y22.T[:][k]) for k in range(len(xdata))])
+
+xlive = np.array([])
+xliverr = np.array([])
+if Pinducteurlive>0:
+
+    Pmccperteslive=(0.089*Omega + 7.4e-5 * Omega**2) + rmcc*Imcclive**2
+
+    xlive=np.array([Pinduitlive])
+    if rendement==1:
+        ylive1=Pinduitlive/(Pinducteurlive+Pmcclive-Pmccperteslive)
+        ylive2= (Pinducteurlive + Pmcclive - Pmccperteslive - rinducteur*Iinducteur**2 - rinduit*Iinduitlive**2 - Pmeca2 -  Pfer2)/(Pinducteurlive+Pmcclive-Pmccperteslive)
+
+    else:
+        ylive1= (Pinducteurlive+Pmcclive-Pmccperteslive) -Pinduitlive #Pertes mesurées
+        ylive2= rinducteur*Iinducteur**2 + rinduit*Iinduitlive**2 + Pmeca2 + Pfer2
+
+    Pinduiti=np.zeros(N)
+    Pinducteuri=np.zeros(N)
+    Pmcci=np.zeros(N)
+    Iinduiti=np.zeros(N)
+    Imcci=np.zeros(N)
+    rinducteuri=np.zeros(N)
+    rinduiti=np.zeros(N)
+    Pavecindi=np.zeros(N)
+    Psansindi=np.zeros(N)
+    Iavecindi=np.zeros(N)
+    Isansindi=np.zeros(N)
+    Iinducteuri=np.zeros(N)
+    Uinducteuri=np.zeros(N)
+    rmcci=np.zeros(N)
+    Omegai=np.zeros(N)
+
+    Y11=np.zeros(N)
+    Y12=np.zeros(N)
+    Y21=np.zeros(N)
+    Y22=np.zeros(N)
+
+    Pmccpertesi = np.zeros(N)
+    Pmeca2i = np.zeros(N)
+    Pfer2i = np.zeros(N)
+
+    for i in range(N):
+        Pinduiti[i]=Pinduitlive+dPinduitlive*np.random.randn()
+        Pinducteuri[i]=Pinducteurlive+dPinducteurlive*np.random.randn()
+        Pmcci[i]=Pmcclive+dPmcclive*np.random.randn()
+        Iinduiti[i]=Iinduitlive+dIinduitlive*np.random.randn()
+        Imcci[i]=Imcclive+dImcclive*np.random.randn()
+
+        rinducteuri[i]=rinducteur+drinducteur*np.random.randn()
+        rinduiti[i]=rinduit+drinduit*np.random.randn()
+        Pavecindi[i]=Pavecind+dPavecind*np.random.randn()
+        Psansindi[i]=Psansind+dPsansind*np.random.randn()
+        Iavecindi[i]=Iavecind+dIavecind*np.random.randn()
+        Isansindi[i]=Isansind+dIsansind*np.random.randn()
+        Iinducteuri[i]=Iinducteur+dIinducteur*np.random.randn()
+        Uinducteuri[i]=Uinducteur+dUinducteur*np.random.randn()
+        rmcci[i]=rmcc+drmcc*np.random.randn()
+        Omegai[i]=Omega+dOmega*np.random.randn()
+
+        Pmccpertesi[i] =(0.089*Omegai[i] + 7.4e-5 * Omegai[i]**2) + rmcci[i]*Imcci[i]**2
+        Pmeca2i[i] = Psansindi[i] - (0.089*Omegai[i] + 7.4e-5 * Omegai[i]**2) - rmcci[i]*Isansindi[i]**2
+        Pfer2i[i]= Pavecindi[i] + Uinducteuri[i]*Iinducteuri[i] - (0.089*Omegai[i] + 7.4e-5 * Omegai[i]**2) - rmcci[i]*Iavecindi[i]**2 - Pmeca2i[i] - rinducteuri[i]*Iinducteuri[i]**2
+
+        Y11[i]= Pinduiti[i]/(Pinducteuri[i]+Pmcci[i]-Pmccpertesi[i])
+        Y12[i]= (Pinducteuri[i] + Pmcci[i] - Pmccpertesi[i] - rinducteuri[i]*Iinducteuri[i]**2 - rinduiti[i]*Iinduiti[i]**2 - Pmeca2i[i] -  Pfer2i[i])/(Pinducteuri[i]+Pmcci[i]-Pmccpertesi[i])
+
+        Y21[i]= (Pinducteuri[i]+Pmcci[i]-Pmccpertesi[i]) -Pinduiti[i]
+        Y22[i]= rinducteuri[i]*Iinducteuri[i]**2 + rinduiti[i]*Iinduiti[i]**2 + Pmeca2i[i] + Pfer2i[i]
+
+    xliverr = np.array([np.std(Pinduiti)])
+    if rendement == 1 :
+        yliverr1 = np.array([np.std(Y11)])
+        yliverr2 = np.array([np.std(Y12)])
+
+    else:
+        yliverr1 = np.array([np.std(Y21)])
+        yliverr2 = np.array([np.std(Y22)])
+
+"""
 if len(xliverr) >0 :
     xerr=np.concatenate((xerrdata,xliverr))
     yerr=np.concatenate((yerrdata,yliverr))
-
 
 if len(xliverr)== 0 :
     xerr=xerrdata
@@ -233,6 +278,7 @@ if len(xlive) == 0 :
     xfit=xdata[debut:fin]
     yfit=ydata[debut:fin]
 
+"""
 
 ### Noms axes et titre
 
@@ -251,9 +297,10 @@ if rendement ==0:
 if rendement ==1:
     plt.figure(figsize=(10,9))
     plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',markersize=4,label='Données mesurées')
-    plt.errorbar(xdata,ydata1,yerr=yerrdata1,xerr=xerrdata1,fmt='o',markersize=4,label='Données "calculées"')
+    plt.errorbar(xdata,ydata1,yerr=yerrdata1,xerr=xerrdata,fmt='o',markersize=4,label='Données "calculées"')
     if len(xlive)>0:
-        plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,fmt='o',label='Point ajouté')
+        plt.errorbar(xlive,ylive1,yerr=yliverr1,xerr=xliverr,fmt='o',c='green',label='Données mesurées live')
+        plt.errorbar(xlive,ylive2,yerr=yliverr2,xerr=xliverr,fmt='o',c='red',label='Données "calculées" live')
     #plt.plot(xfit,func(xfit,a,b),label='Ajustement ')
     plt.title(titlestr,fontsize=ftsize)
     plt.grid(True)
@@ -267,9 +314,10 @@ if rendement ==1:
 else :
     plt.figure(figsize=(10,9))
     plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',markersize=4,label='Données mesurées')
-    plt.errorbar(xdata,ydata1,yerr=yerrdata1,xerr=xerrdata1,fmt='o',markersize=4,label='Données "calculées"')
+    plt.errorbar(xdata,ydata1,yerr=yerrdata1,xerr=xerrdata,fmt='o',markersize=4,label='Données "calculées"')
     if len(xlive)>0:
-        plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,fmt='o',label='Point ajouté')
+        plt.errorbar(xlive,ylive1,yerr=yliverr1,xerr=xliverr,fmt='o',c='green',label='Données mesurées live')
+        plt.errorbar(xlive,ylive2,yerr=yliverr2,xerr=xliverr,fmt='o',c='red',label='Données "calculées" live')
     #plt.plot(xfit,func(xfit,a,b),label='Ajustement ')
     plt.title(titlestr,fontsize=ftsize)
     plt.grid(True)
