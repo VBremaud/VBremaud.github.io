@@ -28,12 +28,15 @@ H=11712*I # Loi de JBD a prendre plus precisemment.
 lamb=650e-9 # Longueur d'onde du laser avec incertitude de 30 nm environ.
 dL=lamb/2*n # Une frange correspond à une variation d'un bras du michelson donc un allongement du barreau de lambda/2
 
-L=1 # A la louche 1 m merite detre pris plus precisemment;
+L=44e-2 # A la louche 1 m merite detre pris plus precisemment;
 ddL = 0.05
 
 # On cherche l'allongement relatif en fonction du champ B.
 xdata=H
 ydata=dL/L
+
+xtab = np.array([0,2500,5000,7500,10000,12500,15000,17500,20000,22500,25000,27500,30000,40000])
+ytab = np.array([0,3e-6,4e-6,4.5e-6,4.5e-6,4.2e-6,3.5e-6,3e-6,2e-6,1.2e-6,0.5e-6,-0.2e-6,-1e-6,-2.8e-6])
 
 ### Incertitudes
 
@@ -107,6 +110,7 @@ plt.figure(figsize=(17,9))
 xtest = np.linspace(np.min(xdata),np.max(xdata),100)
 
 plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Données')
+plt.scatter(xtab,ytab,c='black',label='valeurs tabulés')
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,c='green',fmt='o',label='Point ajouté')
 plt.title(titlestr,fontsize=ftsize)
@@ -117,3 +121,4 @@ plt.legend(fontsize=ftsize)
 plt.xlabel(xstr,fontsize=ftsize)
 plt.ylabel(ystr,fontsize=ftsize)
 plt.show()
+
