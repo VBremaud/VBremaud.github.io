@@ -1,12 +1,9 @@
-"""
-@Louis Heitz et Vincent Brémaud
-
-"""
-
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+
+
 
 ftsize=18
 
@@ -127,8 +124,8 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-ystr="ln(A/A0) []"
-xstr="Distance [m]"
+ystr="log(A/A0)"
+xstr="Distance (m)"
 titlestr="Attténuation du paquet d'onde dans le glycérol"
 
 ### Ajustement
@@ -273,8 +270,8 @@ if freq==1:
     plt.xticks(fontsize=ftsize)
     plt.yticks(fontsize=ftsize)
     plt.legend(fontsize=ftsize)
-    plt.xlabel('f^2 [Hz^2]',fontsize=ftsize)
-    plt.ylabel('Coefficient d\'absorption linéaire [1/m]',fontsize=ftsize)
+    plt.xlabel('f^2 (Hz^2)',fontsize=ftsize)
+    plt.ylabel('Coefficient d\'absorption linéaire [m]',fontsize=ftsize)
     plt.show()
 
     ## Extraction du parametre de fit
