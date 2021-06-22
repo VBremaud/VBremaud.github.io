@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri May 14 15:25:48 2021
 
-@author: Benjamin
-"""
 
 
 import matplotlib.pyplot as plt
@@ -21,11 +17,11 @@ plt.close('all')
 
 ### Point en live
 
-ilive=0.825*1e-3/6
+ilive=0.898*1e-3/6
 
-lamblive=445e-9
+lamblive=443e-9
 
-err_i=0.005_1e-3/6
+err_i=5e-5/6
 
 err_lamb=5*1e-9
 
@@ -106,11 +102,11 @@ print("u(alpha) = " + str(ua) + "\nu(beta) = " + str(ub) )
 
 xfitt=np.linspace(np.min(xdata),np.max(xdata),100)
 plt.figure(figsize=(12,9))
-plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,marker='o', color='b',mfc='white',ecolor='g',linestyle='',capsize=8,label='Preparation')
+plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Preparation')
 
 if len(xlive)>0:
-    plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,marker='o', markersize=8, color='k',mfc='darkred',ecolor='k',linestyle='',capsize=8,label='Point ajouté')
-plt.plot(xfitt,func(xfitt,*popt), color='r', linestyle='--',label='Ajustement ')
+    plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,fmt='o',label='Point ajouté')
+plt.plot(xfitt,func(xfitt,*popt),label='Ajustement ')
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
 plt.xticks(fontsize=ftsize)
