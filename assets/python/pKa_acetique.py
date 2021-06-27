@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 import os
-def func(x,a,b):
+def linear(x,a,b):
     return a*x+b
 
 
@@ -23,17 +23,17 @@ plt.close('all')
 
 
 ### Point en live
-
-Temp=21
-F=100/(100+2*(25-Temp))
+k=1.2e-2
+#Temp=21
+#F=100/(100+2*(25-Temp))
 dSigma=0.02
 dC=3e-3*0.875
-lamb_h=34.9*F*10# Le facteur 10 est la conversion mm cm je crois
-lamb_a=4.1*F*10
+lamb_h=34.9
+lamb_a=4.1
 
 
 Clive=0.5 # On a donc dilué
-Sigmalive=1.000
+Sigmalive=1.000*1e-3/k
 
 dclive=dC
 
@@ -59,22 +59,22 @@ ylive=np.array([np.mean(Qsimlive)])
 xliverr=np.zeros(len(xlive))+dclive
 yliverr=np.zeros(len(xlive))+np.std(Qsimlive)
 
-#xliverr=[]
-#yliverr=[]
-
+xliverr=[]
+yliverr=[]
+xlive=[]
 ### Données
 
 plt.close('all')
 Temp=21
-F=100/(100+2*(25-Temp))
+#F=100/(100+2*(25-Temp))
 
-lamb_h=34.9*F*10# Le facteur 10 est la conversion mm cm je crois
-lamb_a=4.1*F*10
+lamb_h=34.9#*F*10# Le facteur 10 est la conversion mm cm je crois
+lamb_a=4.1#*F*10
 
 #Ci=np.array([0.875,0.35,0.14,0.056,0.022])#,0.009])
 #Sigma=np.array([1.185,0.780,0.471,0.301,0.191])#,0.128])
 Ci=np.array([1,0.75,0.25,0.1]) # On a donc dilué
-Sigma=np.array([1.389,1.224,0.737,0.45])
+Sigma=np.array([1.389,1.224,0.737,0.45])*1e-3/k
 dSigma=0.02
 dC=3e-3*0.875
 dc=np.zeros(len(Ci))+dC
@@ -161,20 +161,20 @@ ftsize=18
 
 ### Tracé de la courbe
 xfitth=np.linspace(np.min(xdata),np.max(xdata),100)
-#fitth=func(xfitth,*popt)
+fitth=func(xfitth,*popt)
 
 
 plt.figure(figsize=(13,9))
 plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,fmt='o',label='Données')
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,fmt='o',label='Point ajouté')
-plt.axhline(y=10**(-4.8),linestyle='--',label='Valeur attendue')
+#plt.axhline(y=10**(-4.8),linestyle='--',label='Valeur attendue')
 plt.plot(xdata,[np.average(yfit)]*len(xdata),label='Valeur obtenue')
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
 plt.xticks(fontsize=ftsize)
 plt.yticks(fontsize=ftsize)
-plt.ylim([1.2e-5,2e-5])
+#plt.ylim([1.2e-5,2e-5])
 plt.legend(fontsize=ftsize)
 plt.xlabel(xstr,fontsize=ftsize)
 plt.ylabel(ystr,fontsize=ftsize)
