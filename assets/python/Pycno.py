@@ -14,6 +14,7 @@ Matériel nécessaire:
 
 I] Estimation initiale de la masse volumique de l'eau
 '''
+
 #Estimation de la masse du pycnomètre à vide.
 m1=33.409# pm 0.05 g (voir l'incertitude balance)
 
@@ -39,6 +40,7 @@ mcyclo=mtot-m1-m3
 Vcyclo=mcyclo/rhoCyclo
 
 #3. Détermination de la masse volumique de NaCl
+
 VKCl=Vpycno-Vcyclo
 
 rhoKCl=m3/VKCl # En g/mL
@@ -169,8 +171,8 @@ RClth=181
 RBrth=196
 RIth=220
 
-
-plt.figure()
+ftsize=18
+plt.figure(figsize=(12,10))
 ax=plt.subplot()
 ax.hist(RCl, 50, color='darkred', alpha=0.75, label='Chlorure',zorder=2)
 ax.axvline(x=RClth,linestyle='--',color='r',label='Tabulé')
@@ -178,7 +180,7 @@ ax.hist(RBr, 50, color='navy', alpha=0.75,label='Bromure',zorder=1)
 ax.axvline(x=RBrth,linestyle='--',color='b',label='Tabulé')
 ax.hist(RI, 50, color='darkgreen', alpha=0.75, label='Iodure',zorder=0)
 ax.axvline(x=RIth,linestyle='--',color='g',label='Tabulé')
-plt.legend(loc='upper left')
-ax.set_xlabel('Tirage des rayons ionique (pm)')
-ax.set_ylabel('Nombre de tirage')
+plt.legend(loc='upper left',fontsize=ftsize)
+ax.set_xlabel('Tirage des rayons ionique (pm)',fontsize=ftsize)
+ax.set_ylabel('Nombre de tirage',fontsize=ftsize)
 plt.show()
