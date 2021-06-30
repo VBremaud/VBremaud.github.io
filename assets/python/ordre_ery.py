@@ -17,7 +17,7 @@ def linear(x,a,b):
 
 ''' Importation fichier xlsc '''
 
-document1 = xlrd.open_workbook("Solution 3.xlsx")
+document1 = xlrd.open_workbook("/Users/Louis/Downloads/Solution2xls.xlsx")
 
 feuille_1 = document1.sheet_by_index(0)
 cols = feuille_1.ncols
@@ -42,8 +42,8 @@ ss_res = np.sum((Y1-fit)**2)
 ss_tot = np.sum((Y1-np.mean(Y1))**2)
 R2 = 1-ss_res/ss_tot
 
-plt.figure()
-size=14
+plt.figure(figsize=(12,9))
+size=12
 ax=plt.subplot(132)
 ax.set_title('Suivi cinétique de la décoloration',fontsize=18)
 ax.plot(X1, Y1,marker='o',linestyle='',color='b', label = "Points expérimentaux")

@@ -18,11 +18,17 @@ AUTHOR: TOM PEYROT & BENJAMIN CAR
 
 ### Point en live
 
-xlive=np.array([]) # Concentration en javel de la solution (mol/L)
-ylive=np.array([]) # kapp mesuré par ajustement de l'absorbance
+clive= 0.5
+kapplive=0.015
 
-xliverr=np.array([])
-yliverr=np.array([])
+dclive=0.05
+dkapplive=0.0005
+
+xlive=np.array([np.log(clive)]) # Concentration en javel de la solution (mol/L)
+ylive=np.array([np.log(kapplive)]) # kapp mesuré par ajustement de l'absorbance
+
+xliverr=np.array([dclive/clive])
+yliverr=np.array([dkapplive/kapplive])
 
 #xliverr=[]
 #yliverr=[]
@@ -118,8 +124,8 @@ print('uk = ' + str('%.1e'%uk) + ' L/mol/s' )
 # A comparer à la valeur du Lurin : 2.7e-2
 
 
-print('Ordre partielle en CLOm='+str(a))
-print ('Incertitude associée='+str(ua))
+print('Ordre partiel  en CLOm= '+str(a))
+print ('Incertitude associée= '+str(ua))
 
 ### Verification hypothèses
 
