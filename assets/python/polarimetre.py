@@ -27,7 +27,7 @@ plt.close('all')
 
 '''
 VERIFICATION DE LA LOI DE BIOT
-AUTEUR: TOM PEYROT & BENJAMIN CAR
+AUTEUR: TOM PEYROT, LOUIS HEITZ & VINCENT BREMAUD
 
 
 De l'acide tartrique à 100g/L devrait faire l'affaire.
@@ -37,13 +37,20 @@ De l'acide tartrique à 100g/L devrait faire l'affaire.
 
 alpha0=180.4
 
+alphalive=183.5
+dalphalive=0.2
+clive=0.1
+dclive=0.01
+
+xlive=np.array([clive])
+xliverr=np.array([dclive])
+
+
+ylive=np.array([alphalive-alpha0])
+yliverr=np.array([dalphalive])
+
 xlive=np.array([])
 xliverr=np.array([])
-
-
-ylive=np.array([])
-yliverr=np.array([])
-
 
 
 ### Données
@@ -58,9 +65,7 @@ c=np.array([100,75,50,25,10])/1000 # Différentes dillutions obtenues. Convertie
 dc=(np.zeros(np.size(c))+dcm)/1000 # incertitude sur la concentration
 
 #%% Données live
-alphalive=np.array([183.5])-alpha0
-dalphalive=np.array([0.2])
-clive=np.array([80])
+
 
 ydata=alpha
 xdata=c
@@ -136,6 +141,7 @@ dc2=(np.zeros(np.size(c2))+dcm2)/1000 # incertitude sur la concentration
 
 popt2,pcov2=curve_fit(func, c2, alpha2,sigma=dalpha2,absolute_sigma=True)
 
+xfit2=c2
 ### Tracé de la courbe
 
 plt.figure(figsize=(10,9))
@@ -144,7 +150,7 @@ plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,marker='o', color='darkblue
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,marker='o', markersize=8, color='k',mfc='darkred',ecolor='k',linestyle='',capsize=8,label='Point ajouté')
 plt.plot(xfit,func(xfit,*popt), color='b', linestyle='--',label='Ajustement ')
-plt.plot(xfit,func(c2,*popt2), color='g', linestyle='--',label='Ajustement ')
+plt.plot(xfit2,func(c2,*popt2), color='g', linestyle='--',label='Ajustement ')
 
 plt.title(titlestr,fontsize=ftsize)
 plt.grid(True)
@@ -161,5 +167,5 @@ plt.show()
 d=2
 PRS=a/(d)
 dPRS=ua/d
-print('Pouvoir rotatoire specifique déduit='+str(PRS))
-print('Incertitude associée='+str(dPRS))
+print('Pouvoir rotatoire specifique déduit= '+str(PRS) + ' ° mL/ g / dm')
+print('Incertitude associée= '+str(dPRS) + ' ° mL/ g / dm')
