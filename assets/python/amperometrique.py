@@ -2,7 +2,7 @@
 """
 Created on Wed May  5 21:22:38 2021
 
-@author: Benjamin
+@author: Louis Heitz, Vincent Bremaud
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,22 +14,26 @@ plt.close('all')
 
 
 ### Point en live
-Contact_live = np.array([])
-xlive=np.array([]) # Numéro de l'anticoïcidence : Faire la troisième d'un côté !
-ylive=np.array([])- Contact_live  # Position du Miroir (mm)
 
-Contact_liverr=np.array([])
-xliverr=np.array([])
-yliverr=np.sqrt(np.array([])**2+Contact_liverr**2)
+Vlive=9.5
+Ilive=0.05e-3
 
-#xliverr=[]
-#yliverr=[]
+dVlive=0.05
+dIlive=0.005e-3
+
+xlive=np.array([Vlive])
+ylive=np.array([Ilive])
+
+xliverr=np.array([dVlive])
+yliverr=np.array([dIlive])
+
+
 
 ### Données
 
 
 
-V=np.array([3,4,5,6,7,8,9,10,11,12,13,14,15,17])*1e-3
+V=np.array([3,4,5,6,7,8,9,10,11,12,13,14,15,17])
 I=np.array([0.16,0.13,0.1,0.085,0.06,0.035,0.018,0,-0.0038,-0.008,-0.0115,-0.015,-0.0177,-0.0224])*1e-3
 
 
@@ -70,8 +74,8 @@ if len(xlive) == 0 :
 
 ### Noms axes et titre
 
-ystr='Intensité en Ampere'
-xstr='Potentiel en V'
+ystr='I [A]'
+xstr='V [mL]'
 titlestr='Amperométrie à potentiel fixé'
 ftsize=18
 
@@ -92,7 +96,7 @@ popt2, pcov2 = curve_fit(func, xfit[fin1-1:], yfit[fin1-1:],sigma=yerr[fin1-1:],
 
 ### Tracé de la courbe
 
-plt.figure(figsize=(12,9))
+plt.figure(figsize=(13,9))
 plt.errorbar(xdata,ydata,yerr=yerrdata,xerr=xerrdata,marker='o', color='b',mfc='white',ecolor='g',linestyle='',capsize=8,label='Preparation')
 if len(xlive)>0:
     plt.errorbar(xlive,ylive,yerr=yliverr,xerr=xliverr,marker='o', markersize=8, color='k',mfc='darkred',ecolor='k',linestyle='',capsize=8,label='Point ajouté')
